@@ -21,52 +21,52 @@ var users = []models.User{
 var configLogs = []models.ConfigLog{
 	models.ConfigLog{
 		Service: "hybris",
-		Team:    "nr-cpt",
+		Team:    "hybris-dev",
 		Message: "This is test config entry",
 		UserID:  1,
 	}, models.ConfigLog{
 		Service: "hybris",
-		Team:    "nr-cpt",
+		Team:    "hybris-dev",
 		Message: "This is test config entry",
 		UserID:  1,
 	}, models.ConfigLog{
 		Service: "hybris",
-		Team:    "nr-cpt",
+		Team:    "hybris-dev",
 		Message: "This is test config entry",
 		UserID:  1,
 	}, models.ConfigLog{
 		Service: "hybris",
-		Team:    "nr-cpt",
+		Team:    "hybris-dev",
 		Message: "This is test config entry",
 		UserID:  1,
 	}, models.ConfigLog{
 		Service: "hybris",
-		Team:    "nr-cpt",
+		Team:    "hybris-dev",
 		Message: "This is test config entry",
 		UserID:  1,
 	}, models.ConfigLog{
 		Service: "hybris",
-		Team:    "nr-cpt",
+		Team:    "hybris-dev",
 		Message: "This is test config entry",
 		UserID:  1,
 	}, models.ConfigLog{
 		Service: "hybris",
-		Team:    "nr-cpt",
+		Team:    "hybris-dev",
 		Message: "This is test config entry",
 		UserID:  1,
 	}, models.ConfigLog{
 		Service: "hybris",
-		Team:    "nr-cpt",
+		Team:    "hybris-dev",
 		Message: "This is test config entry",
 		UserID:  1,
 	}, models.ConfigLog{
 		Service: "hybris",
-		Team:    "nr-cpt",
+		Team:    "hybris-dev",
 		Message: "This is test config entry",
 		UserID:  1,
 	}, models.ConfigLog{
 		Service: "hybris",
-		Team:    "nr-cpt",
+		Team:    "hybris-dev",
 		Message: "This is test config entry",
 		UserID:  1,
 	},
