@@ -11,10 +11,9 @@ import (
 	"github.com/nitinda/microservice-change-log/api/responses"
 )
 
-// GetUsers list all user from database
 func GetUsers(rw http.ResponseWriter, r *http.Request) {
-	db, er := database.DBConnectPostgres()
-	// defer db.Close()
+	db, er := database.DBConnect()
+	defer db.Close()
 	if er != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, er)
 		return
@@ -32,7 +31,6 @@ func GetUsers(rw http.ResponseWriter, r *http.Request) {
 	}(repo)
 }
 
-// GetUser list one user from database
 func GetUser(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uid, err := strconv.ParseUint(vars["id"], 10, 32)
@@ -41,14 +39,8 @@ func GetUser(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, er := database.DBConnectPostgres()
-
-	dbSQL, ok := db.DB()
-	if ok == nil {
-		defer dbSQL.Close()
-	}
-
-	// defer db.Close()
+	db, er := database.DBConnect()
+	defer db.Close()
 	if er != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, er)
 		return
@@ -64,5 +56,4 @@ func GetUser(rw http.ResponseWriter, r *http.Request) {
 		}
 		responses.ToJSON(rw, http.StatusCreated, user)
 	}(repo)
-
 }

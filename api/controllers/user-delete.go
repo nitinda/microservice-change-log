@@ -12,7 +12,6 @@ import (
 	"github.com/nitinda/microservice-change-log/api/responses"
 )
 
-// DeleteUser removes the user from database
 func DeleteUser(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uid, err := strconv.ParseUint(vars["id"], 10, 32)
@@ -21,12 +20,8 @@ func DeleteUser(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, er := database.DBConnectPostgres()
-	dbSQL, ok := db.DB()
-	if ok == nil {
-		defer dbSQL.Close()
-	}
-	// defer db.Close()
+	db, er := database.DBConnect()
+	defer db.Close()
 	if er != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, er)
 		return

@@ -3,8 +3,6 @@ package curd
 import (
 	"github.com/nitinda/microservice-change-log/api/models"
 	"github.com/nitinda/microservice-change-log/api/utils/channels"
-	"github.com/nitinda/microservice-change-log/logger"
-	"gorm.io/gorm"
 )
 
 func (r *respositoryConfigLogsCRUD) ListAllConfigLogs() ([]models.ConfigLog, error) {
@@ -14,36 +12,22 @@ func (r *respositoryConfigLogsCRUD) ListAllConfigLogs() ([]models.ConfigLog, err
 	done := make(chan bool)
 	go func(ch chan<- bool) {
 		defer close(ch)
+		err = r.db.Debug().Model(&models.ConfigLog{}).Limit(100).Find(&configLogs).Error
 
-		result := r.db.Limit(100).Find(&configLogs)
-		if result.Error != nil {
-			logger.Error.Println(result.Error, gorm.ErrRecordNotFound)
+		if err != nil {
 			ch <- false
 			return
 		}
 
-		dbSQL, ok := result.DB()
-		if ok == nil {
-			defer dbSQL.Close()
+		if len(configLogs) > 0 {
+			for i, _ := range configLogs {
+				err = r.db.Debug().Model(&models.User{}).Where("id = ?", configLogs[i].UserID).Find(&configLogs[i].UserInfo).Error
+				if err != nil {
+					ch <- false
+					return
+				}
+			}
 		}
-
-		// err = r.db.Debug().Model(&models.ConfigLog{}).Limit(100).Find(&configLogs).Error
-
-		// if err != nil {
-		// 	ch <- false
-		// 	return
-		// }
-
-		// if len(configLogs) > 0 {
-		// 	for i, _ := range configLogs {
-		// 		err = r.db.Debug().Model(&models.User{}).Where("id = ?", configLogs[i].UserID).Find(&configLogs[i].UserInfo).Error
-		// 		if err != nil {
-		// 			ch <- false
-		// 			return
-		// 		}
-		// 	}
-		// }
-
 		ch <- true
 	}(done)
 

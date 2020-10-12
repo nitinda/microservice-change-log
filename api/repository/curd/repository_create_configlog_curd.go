@@ -10,7 +10,7 @@ func (r *respositoryConfigLogsCRUD) CreateNewConfigLog(configLog models.ConfigLo
 	done := make(chan bool)
 	go func(ch chan<- bool) {
 		defer close(ch)
-		err = r.db.Model(&models.ConfigLog{}).Create(&configLog).Error
+		err = r.db.Debug().Model(&models.ConfigLog{}).Create(&configLog).Error
 
 		if err != nil {
 			ch <- false

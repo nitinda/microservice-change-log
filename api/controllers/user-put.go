@@ -14,7 +14,6 @@ import (
 	"github.com/nitinda/microservice-change-log/api/responses"
 )
 
-// UpdateUser modify user information in the database
 func UpdateUser(rw http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
@@ -37,13 +36,8 @@ func UpdateUser(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, er := database.DBConnectPostgres()
-	dbSQL, ok := db.DB()
-	if ok == nil {
-		defer dbSQL.Close()
-	}
-
-	// defer db.Close()
+	db, er := database.DBConnect()
+	defer db.Close()
 	if er != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, er)
 		return

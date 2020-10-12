@@ -13,7 +13,6 @@ import (
 	"github.com/nitinda/microservice-change-log/api/responses"
 )
 
-// CreateUser create new user in the database
 func CreateUser(rw http.ResponseWriter, r *http.Request) {
 
 	body, err := ioutil.ReadAll(r.Body)
@@ -37,14 +36,9 @@ func CreateUser(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, er := database.DBConnectPostgres()
-	dbSQL, ok := db.DB()
-	if ok == nil {
-		defer dbSQL.Close()
-	}
-
-	// defer db.Close()
-	if err != nil {
+	db, er := database.DBConnect()
+	defer db.Close()
+	if er != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, er)
 		return
 	}

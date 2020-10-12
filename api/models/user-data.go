@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/badoux/checkmail"
-	"gorm.io/gorm"
 
 	"github.com/nitinda/microservice-change-log/api/security"
 	"github.com/nitinda/microservice-change-log/logger"
@@ -22,11 +21,11 @@ type User struct {
 	Password   string      `gorm:"size:60;not null" json:"password"`
 	CreatedAt  time.Time   `json:"created_on"`
 	UpdatedAt  time.Time   `json:"updated_on"`
-	ConfigLogs []ConfigLog `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"config_logs"`
+	ConfigLogs []ConfigLog `gorm:"foreignKey:UserID" json:"config_logs"`
 }
 
 // BeforeSave method encrypt the password
-func (u *User) BeforeSave(db *gorm.DB) (err error) {
+func (u *User) BeforeSave() error {
 	hashedPassword, err := security.HashPassword(u.Password)
 	if err != nil {
 		log.Println(err)

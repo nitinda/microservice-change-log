@@ -6,8 +6,8 @@ import (
 
 var users = []models.User{
 	models.User{
-		Username: "hybris",
-		Email:    "hybris@change.com",
+		Username: "Neville",
+		Email:    "Neville@change.com",
 		Password: "123453433",
 	},
 	// models.User{
@@ -17,57 +17,10 @@ var users = []models.User{
 	// },
 }
 
-// configLogs sample data
 var configLogs = []models.ConfigLog{
 	models.ConfigLog{
 		Service: "hybris",
 		Team:    "nr-cpt",
 		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "nr-cpt",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "nr-cpt",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "nr-cpt",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "nr-cpt",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "nr-cpt",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "nr-cpt",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "nr-cpt",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "nr-cpt",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "nr-cpt",
-		Message: "This is test config entry",
-		UserID:  1,
 	},
 }

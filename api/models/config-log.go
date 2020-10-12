@@ -34,8 +34,8 @@ type ConfigLog struct {
 	// max length: 20
 	Team string `gorm:"size:20;not null" json:"team"`
 
-	// UserInfo []User `json:"user"`
-	UserID uint32 `gorm:"not null" json:"user_id"`
+	UserInfo []User `json:"user"`
+	UserID   uint32 `gorm:"not null" json:"user_id"`
 
 	// the message for the config log entry
 	//

@@ -11,13 +11,8 @@ import (
 
 // GetConfigLogs handles GET requests and returns all config logs from
 func GetConfigLogs(rw http.ResponseWriter, r *http.Request) {
-	db, er := database.DBConnectPostgres()
-
-	dbSQL, ok := db.DB()
-	if ok == nil {
-		defer dbSQL.Close()
-	}
-	// defer db.Close()
+	db, er := database.DBConnect()
+	defer db.Close()
 	if er != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, er)
 		return
