@@ -1,0 +1,184 @@
+basePath: /api/config
+consumes:
+- application/json
+definitions:
+  ConfigLog:
+    description: ConfigLog defines the structure for an API config-log
+    properties:
+      created_on:
+        description: the creation date for the config log entry - auto genrated
+        format: date-time
+        type: string
+        uniqueItems: true
+        x-go-name: CreatedAt
+      id:
+        description: the id for the config log entry - auto genrated
+        format: uint64
+        minimum: 1
+        pattern: '[0-9]+'
+        type: integer
+        uniqueItems: true
+        x-go-name: ID
+      message:
+        description: the message for the config log entry
+        maxLength: 255
+        type: string
+        x-go-name: Message
+      service:
+        description: the service name for the config log entry
+        maxLength: 20
+        type: string
+        x-go-name: Service
+      team:
+        description: the team name for the config log entry
+        maxLength: 20
+        type: string
+        x-go-name: Team
+      updated_on:
+        description: the modification date for the config log entry - auto genrated
+        format: date-time
+        type: string
+        uniqueItems: true
+        x-go-name: UpdatedAt
+      user:
+        items:
+          $ref: '#/definitions/User'
+        type: array
+        x-go-name: UserInfo
+      user_id:
+        format: uint32
+        type: integer
+        x-go-name: UserID
+    required:
+    - service
+    - team
+    - message
+    type: object
+    x-go-package: github.com/nitinda/microservice-change-log/api/models
+  GenericError:
+    description: GenericError is a Generic error message returned by a server
+    properties:
+      message:
+        type: string
+        x-go-name: Message
+    type: object
+    x-go-package: github.com/nitinda/microservice-change-log/api/docs
+  User:
+    description: User struct abstract of user table in database
+    properties:
+      config_logs:
+        items:
+          $ref: '#/definitions/ConfigLog'
+        type: array
+        x-go-name: ConfigLogs
+      created_on:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      email:
+        type: string
+        x-go-name: Email
+      id:
+        format: uint32
+        type: integer
+        x-go-name: ID
+      password:
+        type: string
+        x-go-name: Password
+      updated_on:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+      username:
+        type: string
+        x-go-name: Username
+    type: object
+    x-go-package: github.com/nitinda/microservice-change-log/api/models
+  ValidationError:
+    description: ValidationError is a collection of validation error messages
+    properties:
+      messages:
+        items:
+          type: string
+        type: array
+        x-go-name: Messages
+    type: object
+    x-go-package: github.com/nitinda/microservice-change-log/api/docs
+host: localhost
+info:
+  contact:
+    email: nitindas@gmail.com
+    name: Nitin Das
+  description: |-
+    the purpose of this application is to provide an application
+    that will be used to record config chanegs applied to services.
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+  termsOfService: there are no TOS at this moment.
+  title: changelog.
+  version: 1.0.0
+paths:
+  /api/config:
+    get:
+      consumes:
+      - application/json
+      description: Return a list of config logs from the database
+      operationId: listChangeLog
+      produces:
+      - application/json
+      responses:
+        "200":
+          $ref: '#/responses/getConfiglogsResponse'
+        default:
+          $ref: '#/responses/genericError'
+      schemes:
+      - http
+      tags:
+      - changelog
+    post:
+      consumes:
+      - application/json
+      description: Create new config log entry
+      operationId: createChangeLog
+      produces:
+      - application/json
+      responses:
+        "200":
+          $ref: '#/responses/configlogResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+        "501":
+          $ref: '#/responses/errorResponse'
+      schemes:
+      - http
+      tags:
+      - changelog
+produces:
+- application/json
+responses:
+  configlogResponse:
+    description: Data structure representing a single changelog
+    schema:
+      $ref: '#/definitions/ConfigLog'
+  errorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  errorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
+  genericError:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  getConfiglogsResponse:
+    description: A list of ConfigLog
+    schema:
+      items:
+        $ref: '#/definitions/ConfigLog'
+      type: array
+schemes:
+- http
+swagger: "2.0"
