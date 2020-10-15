@@ -8,6 +8,9 @@ import (
 )
 
 func ToJSON(rw http.ResponseWriter, statusCode int, data interface{}) {
+
+	rw.Header().Set("Content-Type", "application/json")
+
 	rw.WriteHeader(statusCode)
 
 	if data != "" {

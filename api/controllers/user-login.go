@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/nitinda/microservice-change-log/api/auth"
 	"github.com/nitinda/microservice-change-log/api/models"
 	"github.com/nitinda/microservice-change-log/api/responses"
 )
@@ -25,9 +26,17 @@ func Login(rw http.ResponseWriter, r *http.Request) {
 
 	user.UserFieldCheck()
 
-	err = user.ValidateUser("")
+	err = user.ValidateUser("login")
 	if err != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 		return
 	}
+
+	token, err := auth.SignIn(user.Email, user.Password)
+	if err != nil {
+		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
+		return
+	}
+
+	responses.ToJSON(rw, http.StatusOK, token)
 }

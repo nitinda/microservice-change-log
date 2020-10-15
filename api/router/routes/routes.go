@@ -54,7 +54,10 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 	//       200: configlogResponse
 	//       422: errorValidation
 	//       501: errorResponse
-	PostR.HandleFunc("/api/config", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.CreateConfigLog)))
+	PostR.HandleFunc("/api/config", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(controllers.CreateConfigLog))))
+
+	// User Login
+	PostR.HandleFunc("/api/login", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(controllers.Login))))
 
 	DeleteR := r.Methods(http.MethodDelete).Subrouter()
 	DeleteR.HandleFunc("/api/users/{id}", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.DeleteUser)))

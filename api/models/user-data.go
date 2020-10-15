@@ -65,6 +65,23 @@ func (u *User) ValidateUser(action string) error {
 			return errors.New("Invalid Email")
 		}
 		return nil
+	case "login":
+		if u.Email == "" {
+			logger.Error.Println("Required Email")
+			return errors.New("Required Email")
+		}
+
+		err := checkmail.ValidateFormat(u.Email)
+		if err != nil {
+			logger.Error.Println("Invalid Email ID")
+			return errors.New("Invalid Email")
+		}
+
+		if u.Password == "" {
+			logger.Error.Println("Required Password")
+			return errors.New("Required Password")
+		}
+		return nil
 	default:
 		if u.Username == "" {
 			logger.Error.Println("Required Username")
