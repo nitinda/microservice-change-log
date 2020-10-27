@@ -9,8 +9,8 @@ import (
 	"github.com/nitinda/microservice-change-log/api/responses"
 )
 
-// GetConfigLogs handles GET requests and returns all config logs from
-func GetConfigLogs(rw http.ResponseWriter, r *http.Request) {
+// GetChangeLogs handles GET requests and returns all change logs from
+func GetChangeLogs(rw http.ResponseWriter, r *http.Request) {
 	db, er := database.DBConnectPostgres()
 
 	dbSQL, ok := db.DB()
@@ -23,41 +23,14 @@ func GetConfigLogs(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	repo := curd.NewRespositoryConfigLogsCRUD(db)
+	repo := curd.NewRespositoryChangeLogCRUD(db)
 
-	func(configLogRepository repository.ConfigLogReposiory) {
-		configLogs, err := configLogRepository.ListAllConfigLogs()
+	func(changeLogRepository repository.ChangeLogReposiory) {
+		changeLogs, err := changeLogRepository.ListAllChangeLogs()
 		if err != nil {
 			responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 			return
 		}
-		responses.ToJSON(rw, http.StatusCreated, configLogs)
+		responses.ToJSON(rw, http.StatusCreated, changeLogs)
 	}(repo)
 }
-
-// func GetConfigLog(rw http.ResponseWriter, r *http.Request) {
-// 	vars := mux.Vars(r)
-// 	uid, err := strconv.ParseUint(vars["id"], 10, 32)
-// 	if err != nil {
-// 		responses.ValidateBody(rw, http.StatusBadRequest, err)
-// 		return
-// 	}
-
-// 	db, er := database.DBConnect()
-// 	defer db.Close()
-// 	if er != nil {
-// 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, er)
-// 		return
-// 	}
-
-// 	repo := curd.NewRespositoryConfigLogsCRUD(db)
-
-// 	func(configLogRepository repository.ConfigLogReposiory) {
-// 		configLog, err := configLogRepository.ListConfigLog(uint32(uid))
-// 		if err != nil {
-// 			responses.ValidateBody(rw, http.StatusBadGateway, err)
-// 			return
-// 		}
-// 		responses.ToJSON(rw, http.StatusCreated, configLog)
-// 	}(repo)
-// }

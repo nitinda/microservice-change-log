@@ -2,18 +2,22 @@ package curd
 
 import "gorm.io/gorm"
 
-type respositoryConfigLogsCRUD struct {
+// RespositoryChangeLogCRUD struct for getting and updating changelog in database
+type RespositoryChangeLogCRUD struct {
 	db *gorm.DB
 }
 
-func NewRespositoryConfigLogsCRUD(db *gorm.DB) *respositoryConfigLogsCRUD {
-	return &respositoryConfigLogsCRUD{db}
+// NewRespositoryChangeLogCRUD method
+func NewRespositoryChangeLogCRUD(db *gorm.DB) *RespositoryChangeLogCRUD {
+	return &RespositoryChangeLogCRUD{db}
 }
 
-type respositoryUsersCRUD struct {
+// RespositoryTeamCRUD struct for getting and updating teaminfo in database
+type RespositoryTeamCRUD struct {
 	db *gorm.DB
 }
 
-func NewRespositoryUsersCRUD(db *gorm.DB) *respositoryUsersCRUD {
-	return &respositoryUsersCRUD{db}
+// NewRespositoryTeamCRUD method returns a new RespositoryTeamCRUD handler
+func NewRespositoryTeamCRUD(db *gorm.DB) *RespositoryTeamCRUD {
+	return &RespositoryTeamCRUD{db}
 }

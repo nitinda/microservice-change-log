@@ -13,7 +13,8 @@ import (
 	"github.com/nitinda/microservice-change-log/api/responses"
 )
 
-func CreateConfigLog(rw http.ResponseWriter, r *http.Request) {
+// CreateChangeLog method
+func CreateChangeLog(rw http.ResponseWriter, r *http.Request) {
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -21,16 +22,16 @@ func CreateConfigLog(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	configLog := models.ConfigLog{}
-	err = json.Unmarshal(body, &configLog)
+	changeLog := models.ChangeLog{}
+	err = json.Unmarshal(body, &changeLog)
 	if err != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 		return
 	}
 
-	configLog.ConfigLogFieldCheck()
+	changeLog.ChangeLogFieldCheck()
 
-	err = configLog.ValidateConfigLog("")
+	err = changeLog.ValidateChangeLog("")
 	if err != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 		return
@@ -42,21 +43,21 @@ func CreateConfigLog(rw http.ResponseWriter, r *http.Request) {
 	if ok == nil {
 		defer dbSQL.Close()
 	}
-	// defer db.Close()
+
 	if er != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, er)
 		return
 	}
 
-	repo := curd.NewRespositoryConfigLogsCRUD(db)
+	repo := curd.NewRespositoryChangeLogCRUD(db)
 
-	func(configLogRepository repository.ConfigLogReposiory) {
-		configLog, err := configLogRepository.CreateNewConfigLog(configLog)
+	func(changeLogRepository repository.ChangeLogReposiory) {
+		changeLog, err := changeLogRepository.CreateNewChangeLog(changeLog)
 		if err != nil {
 			responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 			return
 		}
-		rw.Header().Set("Location", fmt.Sprintf("%s%s%d", r.Host, r.RequestURI, configLog.ID))
-		responses.ToJSON(rw, http.StatusCreated, configLog)
+		rw.Header().Set("Location", fmt.Sprintf("%s%s%d", r.Host, r.RequestURI, changeLog.ID))
+		responses.ToJSON(rw, http.StatusCreated, changeLog)
 	}(repo)
 }

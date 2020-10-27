@@ -19,35 +19,38 @@ func LoadData() {
 		defer dbSQL.Close()
 	}
 
-	err = db.Migrator().DropTable(&models.ConfigLog{})
+	// Drop Table
+
+	err = db.Migrator().DropTable(&models.ChangeLog{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = db.Migrator().DropTable(&models.User{})
+	err = db.Migrator().DropTable(&models.TeamInfo{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// defer db.Close()
+	// Create Table
 
-	err = db.AutoMigrate(&models.User{})
+	err = db.AutoMigrate(&models.ChangeLog{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = db.AutoMigrate(&models.ConfigLog{})
+	err = db.AutoMigrate(&models.TeamInfo{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Insert data
-	err = db.Model(&models.User{}).Create(&users).Error
+	// Insert data into table
+
+	err = db.Model(&models.TeamInfo{}).Create(&teamInfo).Error
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = db.Model(&models.ConfigLog{}).Create(&configLogs).Error
+	err = db.Model(&models.ChangeLog{}).Create(&changeLogs).Error
 	if err != nil {
 		log.Fatal(err)
 	}

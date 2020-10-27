@@ -5,12 +5,13 @@ import (
 	"github.com/nitinda/microservice-change-log/api/utils/channels"
 )
 
-func (r *respositoryConfigLogsCRUD) CreateNewConfigLog(configLog models.ConfigLog) (models.ConfigLog, error) {
+// CreateNewChangeLog method
+func (r *RespositoryChangeLogCRUD) CreateNewChangeLog(changeLog models.ChangeLog) (models.ChangeLog, error) {
 	var err error
 	done := make(chan bool)
 	go func(ch chan<- bool) {
 		defer close(ch)
-		err = r.db.Model(&models.ConfigLog{}).Create(&configLog).Error
+		err = r.db.Model(&models.ChangeLog{}).Create(&changeLog).Error
 
 		if err != nil {
 			ch <- false
@@ -20,7 +21,7 @@ func (r *respositoryConfigLogsCRUD) CreateNewConfigLog(configLog models.ConfigLo
 	}(done)
 
 	if channels.ValidateChannel(done) {
-		return configLog, nil
+		return changeLog, nil
 	}
-	return models.ConfigLog{}, err
+	return models.ChangeLog{}, err
 }
