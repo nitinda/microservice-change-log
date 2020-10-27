@@ -26,7 +26,7 @@ func SetMiddlewareJSON(next http.HandlerFunc) http.HandlerFunc {
 func SetMiddlewareAuthentication(next http.HandlerFunc) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 
-		err := auth.ValidateToken(r)
+		err := auth.ValidateToken(rw, r)
 
 		if err != nil {
 			logger.Error.Println("Token validation failed ", err)

@@ -46,7 +46,7 @@ func GenerateToken(teamName, teamSecret string) (string, error) {
 	}(done)
 
 	if channels.ValidateChannel(done) {
-		return CreateToken(team.TeamID, team.ClientSecret)
+		return CreateToken(team.TeamName, team.ClientSecret)
 	}
 
 	return "", err

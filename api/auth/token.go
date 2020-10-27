@@ -1,24 +1,30 @@
 package auth
 
 import (
+	"bytes"
+	"encoding/json"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	jwtgo "github.com/dgrijalva/jwt-go"
+	"github.com/nitinda/microservice-change-log/api/models"
+	"github.com/nitinda/microservice-change-log/api/responses"
 	"github.com/nitinda/microservice-change-log/api/utils/console"
 	"github.com/nitinda/microservice-change-log/config"
 	"github.com/nitinda/microservice-change-log/logger"
 )
 
 // CreateToken method
-func CreateToken(teamID uint32, clientSecret string) (string, error) {
+func CreateToken(teamName string, clientSecret string) (string, error) {
 	claims := jwt.MapClaims{}
 
 	claims["authorized"] = true
-	claims["teamID"] = teamID
+	claims["tokenOwner"] = teamName
 	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
@@ -31,7 +37,8 @@ func CreateToken(teamID uint32, clientSecret string) (string, error) {
 }
 
 // ValidateToken method
-func ValidateToken(r *http.Request) error {
+func ValidateToken(rw http.ResponseWriter, r *http.Request) error {
+
 	tokenString := ExtractToken(r)
 
 	// Parse takes the token string and a function for looking up the key. The latter is especially
@@ -60,13 +67,25 @@ func ValidateToken(r *http.Request) error {
 		return err
 	}
 
+	var tokenOwner string
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		// fmt.Println(claims["foo"], claims["nbf"])
 		console.ToJSON(claims)
+
+		tokenOwner = claims["tokenOwner"].(string)
 	}
+
+	err = ValidateClaimOwner(rw, r, tokenOwner)
+	if err != nil {
+		// responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
+		// responses.ToJSON(rw, http.StatusUnauthorized, map[string]string{"unauthorized": "Invalid Token owner"})
+		return err
+	}
+
 	return nil
 }
 
+// ExtractToken method
 func ExtractToken(r *http.Request) string {
 	bearToken := r.Header.Get("Authorization")
 	//normally Authorization the_token_xxx
@@ -76,4 +95,35 @@ func ExtractToken(r *http.Request) string {
 		return strArr[1]
 	}
 	return ""
+}
+
+// ValidateClaimOwner method
+func ValidateClaimOwner(rw http.ResponseWriter, r *http.Request, tokenOwner string) error {
+
+	var bodyBytes []byte
+	bodyBytes, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
+		return err
+	}
+
+	// Restore the io.ReadCloser to its original state
+	r.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+
+	changeLog := models.ChangeLog{}
+	err = json.Unmarshal(bodyBytes, &changeLog)
+	if err != nil {
+		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
+		return err
+	}
+
+	if changeLog.ServiceTeamName != tokenOwner {
+
+		fmt.Println("-=-===-=-==-")
+
+		logger.Error.Println("Invalid Token owner")
+		// responses.ToJSON(rw, http.StatusUnauthorized, map[string]string{"unauthorized": "Invalid Token owner"})
+		return errors.New("Invalid Token owner")
+	}
+	return nil
 }

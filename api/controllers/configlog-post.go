@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -16,14 +17,19 @@ import (
 // CreateChangeLog method
 func CreateChangeLog(rw http.ResponseWriter, r *http.Request) {
 
-	body, err := ioutil.ReadAll(r.Body)
+	var bodyBytes []byte
+
+	bodyBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 		return
 	}
 
+	// Restore the io.ReadCloser to its original state
+	r.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+
 	changeLog := models.ChangeLog{}
-	err = json.Unmarshal(body, &changeLog)
+	err = json.Unmarshal(bodyBytes, &changeLog)
 	if err != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 		return
