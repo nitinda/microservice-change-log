@@ -15,10 +15,11 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 
 	// handlers for API
 	getR := r.Methods(http.MethodGet).Subrouter()
-	getR.HandleFunc("/api/users", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.GetUsers)))
 
-	// swagger:route GET /api/config changelog listChangeLog
-	// Return a list of config logs from the database
+	PostR := r.Methods(http.MethodPost).Subrouter()
+
+	// swagger:route POST /api/token changelog createSessionToken
+	// Create new session token entry
 	//     Consumes:
 	//     - application/json
 	//
@@ -27,18 +28,13 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 	//
 	//     Schemes: http
 	//
+	//     Security:
+	//       ApiKeyAuth: []
+	//
 	//     Responses:
-	//       default: genericError
-	//       200: getConfiglogsResponse
-	getR.HandleFunc("/api/config", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.GetConfigLogs)))
-
-	getR.HandleFunc("/api/users/{id}", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.GetUser)))
-
-	PutR := r.Methods(http.MethodPut).Subrouter()
-	PutR.HandleFunc("/api/users/{id}", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.UpdateUser)))
-
-	PostR := r.Methods(http.MethodPost).Subrouter()
-	PostR.HandleFunc("/api/users", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.CreateUser)))
+	//       200: createSessionTokenResponse
+	//       403: createSessionTokenErrorResponse
+	PostR.HandleFunc("/api/token", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.GenerateSessionToken)))
 
 	// swagger:route POST /api/config changelog createChangeLog
 	// Create new config log entry
@@ -50,14 +46,16 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 	//
 	//     Schemes: http
 	//
+	//     Security:
+	//       BearerAuth: []
+	//
 	//     Responses:
-	//       200: configlogResponse
-	//       422: errorValidation
-	//       501: errorResponse
-	PostR.HandleFunc("/api/config", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.CreateConfigLog)))
+	//       200: changelogResponse
+	//       401: changelogErrorResponse
+	PostR.HandleFunc("/api/config", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.CreateChangeLog)))
 
-	DeleteR := r.Methods(http.MethodDelete).Subrouter()
-	DeleteR.HandleFunc("/api/users/{id}", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.DeleteUser)))
+	// DeleteR := r.Methods(http.MethodDelete).Subrouter()
+	// DeleteR.HandleFunc("/api/users/{id}", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.DeleteUser)))
 
 	// handler for documentation
 	opts := middleware.RedocOpts{

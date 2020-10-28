@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -13,52 +14,56 @@ import (
 	"github.com/nitinda/microservice-change-log/api/responses"
 )
 
-// CreateUser create new user in the database
-func CreateUser(rw http.ResponseWriter, r *http.Request) {
+// CreateChangeLog method
+func CreateChangeLog(rw http.ResponseWriter, r *http.Request) {
 
-	body, err := ioutil.ReadAll(r.Body)
+	var bodyBytes []byte
+
+	bodyBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 		return
 	}
 
-	user := models.User{}
-	err = json.Unmarshal(body, &user)
+	// Restore the io.ReadCloser to its original state
+	r.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+
+	changeLog := models.ChangeLog{}
+	err = json.Unmarshal(bodyBytes, &changeLog)
 	if err != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 		return
 	}
 
-	user.UserFieldCheck()
+	changeLog.ChangeLogFieldCheck()
 
-	err = user.ValidateUser("")
+	err = changeLog.ValidateChangeLog("")
 	if err != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 		return
 	}
 
 	db, er := database.DBConnectPostgres()
+
 	dbSQL, ok := db.DB()
 	if ok == nil {
 		defer dbSQL.Close()
 	}
 
-	// defer db.Close()
-	if err != nil {
+	if er != nil {
 		responses.ValidateBody(rw, http.StatusUnprocessableEntity, er)
 		return
 	}
 
-	repo := curd.NewRespositoryUsersCRUD(db)
+	repo := curd.NewRespositoryChangeLogCRUD(db)
 
-	func(userRepository repository.UserReposiory) {
-		user, err := userRepository.CreateNewUser(user)
+	func(changeLogRepository repository.ChangeLogReposiory) {
+		changeLog, err := changeLogRepository.CreateNewChangeLog(changeLog)
 		if err != nil {
 			responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
 			return
 		}
-		rw.Header().Set("Location", fmt.Sprintf("%s%s%d", r.Host, r.RequestURI, user.ID))
-		responses.ToJSON(rw, http.StatusCreated, user)
+		rw.Header().Set("Location", fmt.Sprintf("%s%s%d", r.Host, r.RequestURI, changeLog.ID))
+		responses.ToJSON(rw, http.StatusCreated, changeLog)
 	}(repo)
-
 }

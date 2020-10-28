@@ -19,3 +19,21 @@ func SetMiddlewareJSON(next http.HandlerFunc) http.HandlerFunc {
 		next(rw, r)
 	}
 }
+
+// func SetMiddlewareAuthentication(next http.HandlerFunc) http.HandlerFunc {
+// 	return func(rw http.ResponseWriter, r *http.Request) {
+
+// 		err := auth.ValidateToken(rw, r)
+
+// 		if err != nil {
+// 			logger.Error.Println("Token validation failed ", err)
+
+// 			// responses.ValidateBody(rw, http.StatusUnauthorized, err)
+// 			e := fmt.Sprintf("%s", err)
+// 			responses.ToJSON(rw, http.StatusUnauthorized, map[string]string{"unauthorized": e})
+// 			return
+// 		}
+
+// 		next(rw, r)
+// 	}
+// }

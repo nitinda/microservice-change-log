@@ -10,16 +10,20 @@ import (
 )
 
 var (
-	PORT         = 0
-	BIND_ADDRESS = ""
-	DB_DRIVER    = ""
-	DB_USER      = ""
-	DB_PASS      = ""
-	DB_NAME      = ""
-	DB_PORT      = 0
-	SSL_MODE     = ""
-	TIMEZONE     = ""
-	DB_URL       = ""
+	PORT                  = 0
+	BIND_ADDRESS          = ""
+	DB_DRIVER             = ""
+	DB_USER               = ""
+	DB_PASS               = ""
+	DB_NAME               = ""
+	DB_PORT               = 0
+	SSL_MODE              = ""
+	TIMEZONE              = ""
+	DB_URL                = ""
+	COGNITO_CLIENT_ID     = ""
+	COGNITO_CLIENT_SECRET = ""
+	COGNITO_USER_POOL_ID  = ""
+	AWS_REGION            = "eu-central-1"
 )
 
 func LoadEnv() {
@@ -59,4 +63,9 @@ func LoadEnv() {
 	// "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
 	DB_URL = fmt.Sprintf("host=0.0.0.0 user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s", os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_NAME"), os.Getenv("DB_PORT"), os.Getenv("SSL_MODE"), os.Getenv("TIMEZONE"))
 
+	COGNITO_CLIENT_ID = os.Getenv("COGNITO_CLIENT_ID")
+	COGNITO_CLIENT_SECRET = os.Getenv("COGNITO_CLIENT_SECRET")
+	COGNITO_USER_POOL_ID = os.Getenv("COGNITO_USER_POOL_ID")
+
+	AWS_REGION = os.Getenv("AWS_REGION")
 }
