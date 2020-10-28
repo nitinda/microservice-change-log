@@ -3,7 +3,6 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -49,9 +48,11 @@ func GenerateSessionToken(rw http.ResponseWriter, r *http.Request) {
 
 	// responses.ToJSON(rw, http.StatusOK, map[string]string{"access_token": token})
 
-	resp, err := auth.CreateToken(team.TeamName, team.ClientSecret)
+	resp, err := auth.GenerateToken(team.TeamName, team.ClientSecret)
 
-	fmt.Println(resp)
+	if err != nil {
+		responses.ToJSON(rw, http.StatusUnauthorized, map[string]string{"unauthorized": err.Error()})
+	}
 
-	responses.ToJSON(rw, http.StatusUnauthorized, map[string]string{"unauthorized": err.Error()})
+	responses.ToJSON(rw, http.StatusOK, map[string]string{"access_token": resp})
 }

@@ -1,8 +1,12 @@
 package middlewares
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/nitinda/microservice-change-log/api/auth"
+
+	"github.com/nitinda/microservice-change-log/api/responses"
 	"github.com/nitinda/microservice-change-log/logger"
 )
 
@@ -20,20 +24,20 @@ func SetMiddlewareJSON(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-// func SetMiddlewareAuthentication(next http.HandlerFunc) http.HandlerFunc {
-// 	return func(rw http.ResponseWriter, r *http.Request) {
+func SetMiddlewareAuthentication(next http.HandlerFunc) http.HandlerFunc {
+	return func(rw http.ResponseWriter, r *http.Request) {
 
-// 		err := auth.ValidateToken(rw, r)
+		err := auth.ValidateToken(rw, r)
 
-// 		if err != nil {
-// 			logger.Error.Println("Token validation failed ", err)
+		if err != nil {
+			logger.Error.Println("Token validation failed ", err)
 
-// 			// responses.ValidateBody(rw, http.StatusUnauthorized, err)
-// 			e := fmt.Sprintf("%s", err)
-// 			responses.ToJSON(rw, http.StatusUnauthorized, map[string]string{"unauthorized": e})
-// 			return
-// 		}
+			// responses.ValidateBody(rw, http.StatusUnauthorized, err)
+			e := fmt.Sprintf("%s", err)
+			responses.ToJSON(rw, http.StatusUnauthorized, map[string]string{"unauthorized": e})
+			return
+		}
 
-// 		next(rw, r)
-// 	}
-// }
+		next(rw, r)
+	}
+}

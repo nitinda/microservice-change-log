@@ -68,4 +68,5 @@ func LoadEnv() {
 	COGNITO_USER_POOL_ID = os.Getenv("COGNITO_USER_POOL_ID")
 
 	AWS_REGION = os.Getenv("AWS_REGION")
+
 }

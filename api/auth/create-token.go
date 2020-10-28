@@ -4,8 +4,8 @@ import (
 	"github.com/nitinda/microservice-change-log/config"
 )
 
-// CreateToken method
-func CreateToken(teamName string, clientSecret string) (string, error) {
+// GenerateToken method
+func GenerateToken(teamName string, clientSecret string) (string, error) {
 
 	serviceCognito := getAWSCognitoClient(config.AWS_REGION)
 

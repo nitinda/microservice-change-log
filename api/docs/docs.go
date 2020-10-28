@@ -22,20 +22,19 @@
 //     - application/json
 //
 //     Security:
-//     - BearerAuth: []
-//     - ApiKeyAuth: []
+//     - OAuth2: []
 //
 //     SecurityDefinitions:
-//     BearerAuth:
-//          type: apiKey
-//          name: Authorization
-//          in: body
+//     OAuth2:
+//         type: oauth2
+//         description: This API uses OAuth 2 with the Client Credntials grant flow.
+//         tokenUrl: /token
+//         in: header
+//         scopes:
+//           email: userEmail
+//           userinfo: username
+//         flow: application
 //
-//     SecurityDefinitions:
-//     ApiKeyAuth:
-//          type: apiKey
-//          name: TeamName, ClientSecret
-//          in: body
 //
 // swagger:meta
 package docs

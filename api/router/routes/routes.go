@@ -29,7 +29,7 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 	//     Schemes: http
 	//
 	//     Security:
-	//       ApiKeyAuth: []
+	//       OAuth2: []
 	//
 	//     Responses:
 	//       200: createSessionTokenResponse
@@ -47,12 +47,12 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 	//     Schemes: http
 	//
 	//     Security:
-	//       BearerAuth: []
+	//       OAuth2: []
 	//
 	//     Responses:
 	//       200: changelogResponse
 	//       401: changelogErrorResponse
-	PostR.HandleFunc("/api/config", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.CreateChangeLog)))
+	PostR.HandleFunc("/api/config", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(controllers.CreateChangeLog))))
 
 	// DeleteR := r.Methods(http.MethodDelete).Subrouter()
 	// DeleteR.HandleFunc("/api/users/{id}", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.DeleteUser)))

@@ -15,6 +15,8 @@ import (
 	"github.com/nitinda/microservice-change-log/logger"
 )
 
+// Special thanks to - https://github.com/mura123yasu/go-cognito
+
 // initiateAuthRequest method
 func initiateAuthRequest(teamName, clientSecret string, client *cognito.Client) (string, error) {
 
@@ -72,9 +74,7 @@ func initiateAuthRequest(teamName, clientSecret string, client *cognito.Client) 
 			return "", errors.New(errString)
 		}
 
-		// print the tokens
-		fmt.Println(resp)
-		fmt.Println(*resp.AuthenticationResult)
+		// extract the AccessToken
 		tokenString = *resp.AuthenticationResult.AccessToken
 	}
 

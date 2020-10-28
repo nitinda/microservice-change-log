@@ -1,58 +1,69 @@
-basePath: /api/config
+basePath: /api
 consumes:
 - application/json
 definitions:
-  ConfigLog:
-    description: ConfigLog defines the structure for an API config-log
+  ChangeLog:
+    description: ChangeLog defines the structure for an API config-log
     properties:
-      created_on:
-        description: the creation date for the config log entry - auto genrated
-        format: date-time
+      AgentInfo:
+        description: the Agent Info for the change log entry
+        maxLength: 20
+        type: string
+      ApplicationName:
+        description: the Application Name for the change log entry
+        maxLength: 20
+        type: string
+      CommitHash:
+        description: the Commit Hash for the change log entry
+        maxLength: 100
         type: string
         uniqueItems: true
-        x-go-name: CreatedAt
-      id:
-        description: the id for the config log entry - auto genrated
+      ConfigEntryID:
+        description: the id for the change log entry - auto genrated
         format: uint64
         minimum: 1
         pattern: '[0-9]+'
         type: integer
         uniqueItems: true
         x-go-name: ID
-      message:
-        description: the message for the config log entry
-        maxLength: 255
-        type: string
-        x-go-name: Message
-      service:
-        description: the service name for the config log entry
-        maxLength: 20
-        type: string
-        x-go-name: Service
-      team:
-        description: the team name for the config log entry
-        maxLength: 20
-        type: string
-        x-go-name: Team
-      updated_on:
-        description: the modification date for the config log entry - auto genrated
+      CreatedAt:
+        description: the Creation Date for the change log entry - auto genrated
         format: date-time
         type: string
         uniqueItems: true
-        x-go-name: UpdatedAt
-      user:
-        items:
-          $ref: '#/definitions/User'
-        type: array
-        x-go-name: UserInfo
-      user_id:
-        format: uint32
-        type: integer
-        x-go-name: UserID
+      EnvironmentName:
+        description: the Environment Name for the change log entry
+        maxLength: 10
+        type: string
+      Message:
+        description: the Message for the change log entry
+        maxLength: 255
+        type: string
+      ReleaseInfo:
+        description: the Release Info for the change log entry
+        maxLength: 30
+        type: string
+      ServiceTeamName:
+        description: the Service Team Name for the change log entry
+        maxLength: 20
+        type: string
+      UpdatedAt:
+        description: the Modification Date for the change log entry - auto genrated
+        format: date-time
+        type: string
+      Username:
+        description: the Username for the change log entry (Execution user)
+        maxLength: 20
+        type: string
     required:
-    - service
-    - team
-    - message
+    - ServiceTeamName
+    - ApplicationName
+    - Username
+    - EnvironmentName
+    - CommitHash
+    - ReleaseInfo
+    - AgentInfo
+    - Message
     type: object
     x-go-package: github.com/nitinda/microservice-change-log/api/models
   GenericError:
@@ -63,47 +74,29 @@ definitions:
         x-go-name: Message
     type: object
     x-go-package: github.com/nitinda/microservice-change-log/api/docs
-  User:
-    description: User struct abstract of user table in database
+  TeamInfo:
+    description: TeamInfo struct abstract of Team data table in database
     properties:
-      config_logs:
-        items:
-          $ref: '#/definitions/ConfigLog'
-        type: array
-        x-go-name: ConfigLogs
-      created_on:
-        format: date-time
+      ClientSecret:
+        description: the Client Secret to generate new session token
+        example: '''$2a$10$m/22n7xmifpi1/rpsIzsIuY7.9walzEKloGCJF2ZpV.AElO83f2du'''
+        maxLength: 80
         type: string
-        x-go-name: CreatedAt
-      email:
-        type: string
-        x-go-name: Email
-      id:
+        uniqueItems: true
+      TeamID:
         format: uint32
         type: integer
-        x-go-name: ID
-      password:
+      TeamName:
+        description: the Service Team Name to generate new session token
+        example: sales
+        maxLength: 20
         type: string
-        x-go-name: Password
-      updated_on:
-        format: date-time
-        type: string
-        x-go-name: UpdatedAt
-      username:
-        type: string
-        x-go-name: Username
+        uniqueItems: true
+    required:
+    - TeamName
+    - ClientSecret
     type: object
     x-go-package: github.com/nitinda/microservice-change-log/api/models
-  ValidationError:
-    description: ValidationError is a collection of validation error messages
-    properties:
-      messages:
-        items:
-          type: string
-        type: array
-        x-go-name: Messages
-    type: object
-    x-go-package: github.com/nitinda/microservice-change-log/api/docs
 host: localhost
 info:
   contact:
@@ -116,69 +109,178 @@ info:
     name: MIT
     url: http://opensource.org/licenses/MIT
   termsOfService: there are no TOS at this moment.
-  title: changelog.
+  title: |-
+    Changelog API
+    Documentation
   version: 1.0.0
 paths:
   /api/config:
-    get:
-      consumes:
-      - application/json
-      description: Return a list of config logs from the database
-      operationId: listChangeLog
-      produces:
-      - application/json
-      responses:
-        "200":
-          $ref: '#/responses/getConfiglogsResponse'
-        default:
-          $ref: '#/responses/genericError'
-      schemes:
-      - http
-      tags:
-      - changelog
     post:
       consumes:
       - application/json
       description: Create new config log entry
       operationId: createChangeLog
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          properties:
+            AgentInfo:
+              description: the Agent Info for the change log entry
+              example: jenkins | gitlab
+              maxLength: 20
+              type: string
+            ApplicationName:
+              description: the Application Name for the change log entry
+              example: ngs
+              maxLength: 20
+              type: string
+            CommitHash:
+              description: the Commit Hash for the change log entry
+              maxLength: 100
+              type: string
+              uniqueItems: true
+            EnvironmentName:
+              description: the Environment Name for the change log entry
+              example: dev | test | prod
+              maxLength: 10
+              type: string
+            Message:
+              description: the Message for the change log entry
+              example: This is dummy release
+              maxLength: 255
+              type: string
+            ReleaseInfo:
+              description: the Release Info for the change log entry
+              example: Release number 1.2.3
+              maxLength: 30
+              type: string
+            ServiceTeamName:
+              description: the Service Team Name for the change log entry
+              example: sales
+              maxLength: 20
+              type: string
+            Username:
+              description: the Username for the change log entry (Execution user)
+              example: John Wick
+              maxLength: 20
+              type: string
+          required:
+          - ServiceTeamName
+          - ApplicationName
+          - Username
+          - EnvironmentName
+          - CommitHash
+          - ReleaseInfo
+          - AgentInfo
+          - Message
+          type: object
       produces:
       - application/json
       responses:
         "200":
-          $ref: '#/responses/configlogResponse'
-        "422":
-          $ref: '#/responses/errorValidation'
-        "501":
-          $ref: '#/responses/errorResponse'
+          $ref: '#/responses/changelogResponse'
+        "401":
+          $ref: '#/responses/changelogErrorResponse'
       schemes:
       - http
+      security:
+      - OAuth2:
+        - '[]'
+      tags:
+      - changelog
+  /api/token:
+    post:
+      consumes:
+      - application/json
+      description: Create new session token entry
+      operationId: createSessionToken
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          properties:
+            ClientSecret:
+              description: the Client Secret to generate new session token
+              example: '''$2a$10$m/22n7xmifpi1/rpsIzsIuY7.9walzEKloGCJF2ZpV.AElO83f2du'''
+              maxLength: 80
+              type: string
+              uniqueItems: true
+            TeamName:
+              description: the Service Team Name to generate new session token
+              example: sales
+              maxLength: 20
+              type: string
+              uniqueItems: true
+          required:
+          - TeamName
+          - ClientSecret
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          $ref: '#/responses/createSessionTokenResponse'
+        "403":
+          $ref: '#/responses/createSessionTokenErrorResponse'
+      schemes:
+      - http
+      security:
+      - OAuth2:
+        - '[]'
       tags:
       - changelog
 produces:
 - application/json
 responses:
-  configlogResponse:
-    description: Data structure representing a single changelog
-    schema:
-      $ref: '#/definitions/ConfigLog'
-  errorResponse:
+  changelogErrorResponse:
     description: Generic error message returned as a string
     schema:
-      $ref: '#/definitions/GenericError'
-  errorValidation:
-    description: Validation errors defined as an array of strings
+      properties:
+        unauthorized:
+          example: Token is expired or signature is invalid
+          type: string
+          x-go-name: Message
+      type: object
+  changelogResponse:
+    description: Data structure representing a single changelog
     schema:
-      $ref: '#/definitions/ValidationError'
+      $ref: '#/definitions/ChangeLog'
+  createSessionTokenErrorResponse:
+    description: A ValidationError is an error that is used when the required input fails validation.
+    schema:
+      properties:
+        unauthorized:
+          example: Access Denied
+          type: string
+          x-go-name: Message
+      type: object
+  createSessionTokenResponse:
+    description: Data structure representing create session token api response
+    schema:
+      properties:
+        access_token:
+          example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MDM3NTc2NzgsInRlYW1JRCI6MX0.uCRZnm6Fz6nI5_dV9lzRKejF3M5HB_MD5gRYuHG8sfVfPVmdNH
+          type: string
+          x-go-name: Code
+      type: object
   genericError:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
-  getConfiglogsResponse:
-    description: A list of ConfigLog
-    schema:
-      items:
-        $ref: '#/definitions/ConfigLog'
-      type: array
 schemes:
 - http
+security:
+- OAuth2:
+  - '[]'
+securityDefinitions:
+  OAuth2:
+    description: This API uses OAuth 2 with the Client Credntials grant flow.
+    flow: application
+    in: header
+    scopes:
+      email: userEmail
+      userinfo: username
+    tokenUrl: /token
+    type: oauth2
 swagger: "2.0"
