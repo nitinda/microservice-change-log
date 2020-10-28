@@ -77,8 +77,7 @@ func ValidateToken(rw http.ResponseWriter, r *http.Request) error {
 
 	err = ValidateClaimOwner(rw, r, tokenOwner)
 	if err != nil {
-		// responses.ValidateBody(rw, http.StatusUnprocessableEntity, err)
-		// responses.ToJSON(rw, http.StatusUnauthorized, map[string]string{"unauthorized": "Invalid Token owner"})
+		logger.Error.Println("Invalid Token owner")
 		return err
 	}
 

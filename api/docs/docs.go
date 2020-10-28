@@ -1,4 +1,5 @@
-// Package docs changelog.
+// Package docs Changelog API
+// Documentation
 //
 // the purpose of this application is to provide an application
 // that will be used to record config chanegs applied to services.
@@ -9,7 +10,7 @@
 //
 //	   Schemes: http
 //     Host: localhost
-//     BasePath: /api/config
+//     BasePath: /api
 //     Version: 1.0.0
 //     License: MIT http://opensource.org/licenses/MIT
 //     Contact: Nitin Das<nitindas@gmail.com>
@@ -19,6 +20,22 @@
 //
 //     Produces:
 //     - application/json
+//
+//     Security:
+//     - BearerAuth: []
+//     - ApiKeyAuth: []
+//
+//     SecurityDefinitions:
+//     BearerAuth:
+//          type: apiKey
+//          name: Authorization
+//          in: body
+//
+//     SecurityDefinitions:
+//     ApiKeyAuth:
+//          type: apiKey
+//          name: TeamName, ClientSecret
+//          in: body
 //
 // swagger:meta
 package docs

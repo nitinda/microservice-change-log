@@ -15,7 +15,7 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 
 	// handlers for API
 	getR := r.Methods(http.MethodGet).Subrouter()
-	getR.HandleFunc("/api/config", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(controllers.GetChangeLogs))))
+	// getR.HandleFunc("/api/config", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(controllers.GetChangeLogs))))
 
 	PostR := r.Methods(http.MethodPost).Subrouter()
 
@@ -28,6 +28,9 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 	//     - application/json
 	//
 	//     Schemes: http
+	//
+	//     Security:
+	//       ApiKeyAuth: []
 	//
 	//     Responses:
 	//       200: createSessionTokenResponse
@@ -45,12 +48,7 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 	//     Schemes: http
 	//
 	//     Security:
-	//     - bearer
-	//
-	//     SecurityDefinitions:
-	//     bearer:
-	//          name: Authorization
-	//          in: body
+	//       BearerAuth: []
 	//
 	//     Responses:
 	//       200: changelogResponse

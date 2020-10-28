@@ -1,4 +1,4 @@
-basePath: /api/config
+basePath: /api
 consumes:
 - application/json
 definitions:
@@ -115,7 +115,9 @@ info:
     name: MIT
     url: http://opensource.org/licenses/MIT
   termsOfService: there are no TOS at this moment.
-  title: changelog.
+  title: |-
+    Changelog API
+    Documentation
   version: 1.0.0
 paths:
   /api/config:
@@ -189,12 +191,8 @@ paths:
       schemes:
       - http
       security:
-      - SecurityDefinitions: []
-      - bearer: []
-      - name:
-        - Authorization
-      - in:
-        - body
+      - BearerAuth:
+        - '[]'
       tags:
       - changelog
   /api/token:
@@ -233,6 +231,9 @@ paths:
           $ref: '#/responses/createSessionTokenErrorResponse'
       schemes:
       - http
+      security:
+      - ApiKeyAuth:
+        - '[]'
       tags:
       - changelog
 produces:
@@ -275,4 +276,18 @@ responses:
       $ref: '#/definitions/GenericError'
 schemes:
 - http
+security:
+- BearerAuth:
+  - '[]'
+- ApiKeyAuth:
+  - '[]'
+securityDefinitions:
+  ApiKeyAuth:
+    in: body
+    name: TeamName, ClientSecret
+    type: apiKey
+  BearerAuth:
+    in: body
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

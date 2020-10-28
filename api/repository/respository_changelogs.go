@@ -6,5 +6,5 @@ import (
 
 type ChangeLogReposiory interface {
 	CreateNewChangeLog(models.ChangeLog) (models.ChangeLog, error)
-	ListAllChangeLogs() ([]models.ChangeLog, error)
+	// ListAllChangeLogs() ([]models.ChangeLog, error)
 }
