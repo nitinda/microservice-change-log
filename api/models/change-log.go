@@ -39,7 +39,7 @@ type ChangeLog struct {
 	// required: true
 	// Unique: false
 	// max length: 20
-	Username string `gorm:"size:20;not null" json:"Username"`
+	Username string `gorm:"size:20;not null;username <> ''" json:"Username"`
 
 	// // UserInfo []User `json:"user"`
 	// UserID uint32 `gorm:"not null" json:"user_id"`
