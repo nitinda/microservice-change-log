@@ -5,6 +5,7 @@ import (
 
 	"github.com/nitinda/microservice-change-log/api/database"
 	"github.com/nitinda/microservice-change-log/api/models"
+	"github.com/nitinda/microservice-change-log/logger"
 )
 
 // LoadData will import data into database
@@ -17,13 +18,14 @@ func LoadData() {
 	dbSQL, ok := db.DB()
 	if ok == nil {
 		defer dbSQL.Close()
+		logger.Error.Println("===================================")
 	}
 
 	// Drop Table
 
 	err = db.Migrator().DropTable(&models.ChangeLog{})
 	if err != nil {
-		log.Fatal(err)
+		logger.Error.Println(err)
 	}
 
 	// err = db.Migrator().DropTable(&models.TeamInfo{})
@@ -35,7 +37,7 @@ func LoadData() {
 
 	err = db.AutoMigrate(&models.ChangeLog{})
 	if err != nil {
-		log.Fatal(err)
+		logger.Error.Println(err)
 	}
 
 	// err = db.AutoMigrate(&models.TeamInfo{})
@@ -52,6 +54,6 @@ func LoadData() {
 
 	err = db.Model(&models.ChangeLog{}).Create(&changeLogs).Error
 	if err != nil {
-		log.Fatal(err)
+		logger.Error.Println(err)
 	}
 }
