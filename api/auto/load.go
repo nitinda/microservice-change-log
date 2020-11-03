@@ -18,7 +18,6 @@ func LoadData() {
 	dbSQL, ok := db.DB()
 	if ok == nil {
 		defer dbSQL.Close()
-		logger.Error.Println("===================================")
 	}
 
 	// Drop Table
