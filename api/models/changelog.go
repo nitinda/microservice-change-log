@@ -27,12 +27,12 @@ type ChangeLog struct {
 	// max length: 20
 	ServiceTeamName string `gorm:"size:20;not null" json:"ServiceTeamName"`
 
-	// the Application Name for the change log entry
+	// the Service Name for the change log entry
 	//
 	// required: true
 	// Unique: false
 	// max length: 20
-	ApplicationName string `gorm:"size:20;not null" json:"ApplicationName"`
+	ServiceName string `gorm:"size:20;not null" json:"ServiceName"`
 
 	// the Username for the change log entry (Execution user)
 	//
@@ -40,9 +40,6 @@ type ChangeLog struct {
 	// Unique: false
 	// max length: 20
 	Username string `gorm:"size:20;not null;username <> ''" json:"Username"`
-
-	// // UserInfo []User `json:"user"`
-	// UserID uint32 `gorm:"not null" json:"user_id"`
 
 	// the Environment Name for the change log entry
 	//
@@ -64,6 +61,13 @@ type ChangeLog struct {
 	// Unique: false
 	// max length: 30
 	ReleaseInfo string `gorm:"size:30;not null:check:release_info <> ''" json:"ReleaseInfo"`
+
+	// the TypeOfChange for the change log entry
+	//
+	// required: true
+	// Unique: false
+	// max length: 20
+	TypeOfChange string `gorm:"size:20;not null;check:type_of_change <> ''" json:"TypeOfChange"`
 
 	// the Agent Info for the change log entry
 	//
@@ -97,7 +101,12 @@ type ChangeLog struct {
 func (cl *ChangeLog) ChangeLogFieldCheck() {
 	cl.ID = 0
 	cl.ServiceTeamName = html.EscapeString(strings.TrimSpace(cl.ServiceTeamName))
-	cl.ApplicationName = html.EscapeString(strings.TrimSpace(cl.ApplicationName))
+	cl.ServiceName = html.EscapeString(strings.TrimSpace(cl.ServiceName))
+	cl.Username = html.EscapeString(strings.TrimSpace(cl.Username))
+	cl.CommitHash = html.EscapeString(strings.TrimSpace(cl.CommitHash))
+	cl.AgentInfo = html.EscapeString(strings.TrimSpace(cl.AgentInfo))
+	cl.ReleaseInfo = html.EscapeString(strings.TrimSpace(cl.ReleaseInfo))
+	cl.TypeOfChange = html.EscapeString(strings.TrimSpace(cl.TypeOfChange))
 	cl.Message = html.EscapeString(strings.TrimSpace(cl.Message))
 	cl.CreatedAt = time.Now()
 	cl.UpdatedAt = time.Now()
@@ -110,7 +119,7 @@ func (cl *ChangeLog) ValidateChangeLog(action string) error {
 		return errors.New("Required Service Name")
 	}
 
-	if cl.ApplicationName == "" {
+	if cl.ServiceName == "" {
 		logger.Error.Println("Required Application Name")
 		return errors.New("Required Team Name")
 	}
@@ -125,9 +134,9 @@ func (cl *ChangeLog) ValidateChangeLog(action string) error {
 		return errors.New("Required Username")
 	}
 
-	if cl.EnvironmentName == "" {
+	if cl.EnvironmentName == "" && cl.EnvironmentName == "dev|test|preprod|prod" {
 		logger.Error.Println("Required Environment Name")
-		return errors.New("Required Environment Name")
+		return errors.New("Required Environment Name, Exmaple : dev or test or preprod or prod")
 	}
 
 	if cl.CommitHash == "" {
@@ -140,9 +149,14 @@ func (cl *ChangeLog) ValidateChangeLog(action string) error {
 		return errors.New("Required Release Information")
 	}
 
+	if cl.TypeOfChange == "" {
+		logger.Error.Println("Required TypeOfChange")
+		return errors.New("Required TypeOfChange e.g - config or release")
+	}
+
 	if cl.AgentInfo == "" {
 		logger.Error.Println("Required Agent Information")
-		return errors.New("Required Agent Information")
+		return errors.New("Required Agent Information e.g - jenkins or gitlab")
 	}
 
 	return nil

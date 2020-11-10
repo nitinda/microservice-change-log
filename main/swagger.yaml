@@ -9,10 +9,6 @@ definitions:
         description: the Agent Info for the change log entry
         maxLength: 20
         type: string
-      ApplicationName:
-        description: the Application Name for the change log entry
-        maxLength: 20
-        type: string
       CommitHash:
         description: the Commit Hash for the change log entry
         maxLength: 100
@@ -43,8 +39,16 @@ definitions:
         description: the Release Info for the change log entry
         maxLength: 30
         type: string
+      ServiceName:
+        description: the Service Name for the change log entry
+        maxLength: 20
+        type: string
       ServiceTeamName:
         description: the Service Team Name for the change log entry
+        maxLength: 20
+        type: string
+      TypeOfChange:
+        description: the TypeOfChange for the change log entry
         maxLength: 20
         type: string
       UpdatedAt:
@@ -57,11 +61,12 @@ definitions:
         type: string
     required:
     - ServiceTeamName
-    - ApplicationName
+    - ServiceName
     - Username
     - EnvironmentName
     - CommitHash
     - ReleaseInfo
+    - TypeOfChange
     - AgentInfo
     - Message
     type: object
@@ -130,11 +135,6 @@ paths:
               example: jenkins | gitlab
               maxLength: 20
               type: string
-            ApplicationName:
-              description: the Application Name for the change log entry
-              example: ngs
-              maxLength: 20
-              type: string
             CommitHash:
               description: the Commit Hash for the change log entry
               maxLength: 100
@@ -155,10 +155,20 @@ paths:
               example: Release number 1.2.3
               maxLength: 30
               type: string
+            ServiceName:
+              description: the Service Name for the change log entry
+              example: tomcat
+              maxLength: 20
+              type: string
             ServiceTeamName:
               description: the Service Team Name for the change log entry
               example: sales
               maxLength: 20
+              type: string
+            TypeOfChange:
+              description: the TypeOfChange for the change log entry
+              example: config or release
+              maxLength: 10
               type: string
             Username:
               description: the Username for the change log entry (Execution user)
@@ -167,11 +177,12 @@ paths:
               type: string
           required:
           - ServiceTeamName
-          - ApplicationName
+          - ServiceName
           - Username
           - EnvironmentName
           - CommitHash
           - ReleaseInfo
+          - TypeOfChange
           - AgentInfo
           - Message
           type: object

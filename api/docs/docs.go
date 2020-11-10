@@ -80,13 +80,13 @@ type changelogRequestWrapper struct {
 		// example: sales
 		ServiceTeamName string `json:"ServiceTeamName"`
 
-		// the Application Name for the change log entry
+		// the Service Name for the change log entry
 		//
 		// required: true
 		// Unique: false
 		// max length: 20
-		// example: ngs
-		ApplicationName string `json:"ApplicationName"`
+		// example: tomcat
+		ServiceName string `json:"ServiceName"`
 
 		// the Username for the change log entry (Execution user)
 		//
@@ -119,6 +119,14 @@ type changelogRequestWrapper struct {
 		// max length: 30
 		// example: Release number 1.2.3
 		ReleaseInfo string `json:"ReleaseInfo"`
+
+		// the TypeOfChange for the change log entry
+		//
+		// required: true
+		// Unique: false
+		// max length: 10
+		// example: config or release
+		TypeOfChange string `gorm:"size:10;not null;type_of_change <> ''" json:"TypeOfChange"`
 
 		// the Agent Info for the change log entry
 		//
