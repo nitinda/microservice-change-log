@@ -18,7 +18,7 @@ var changeLogs = []models.ChangeLog{
 		AgentInfo:       "jenkins",
 		TypeOfChange:    "release",
 		Username:        "user1",
-		CreatedAt:       time.Date(2020, 11, 10, 10, 4, 58, 651387237, time.UTC),
+		CreatedAt:       time.Date(2020, 11, 12, 06, 4, 58, 651387237, time.UTC),
 	}, models.ChangeLog{
 		ServiceTeamName: "sales",
 		ServiceName:     "hybris",
@@ -29,7 +29,7 @@ var changeLogs = []models.ChangeLog{
 		AgentInfo:       "jenkins",
 		TypeOfChange:    "config",
 		Username:        "user1",
-		CreatedAt:       time.Date(2020, 11, 10, 10, 14, 58, 651387237, time.UTC),
+		CreatedAt:       time.Date(2020, 11, 12, 07, 14, 58, 651387237, time.UTC),
 	}, models.ChangeLog{
 		ServiceTeamName: "sales",
 		ServiceName:     "hybris",
@@ -40,7 +40,7 @@ var changeLogs = []models.ChangeLog{
 		AgentInfo:       "jenkins",
 		TypeOfChange:    "release",
 		Username:        "user22",
-		CreatedAt:       time.Date(2020, 11, 10, 10, 24, 58, 651387237, time.UTC),
+		CreatedAt:       time.Date(2020, 11, 12, 8, 24, 58, 651387237, time.UTC),
 	}, models.ChangeLog{
 		ServiceTeamName: "sales",
 		ServiceName:     "hybris",
@@ -51,7 +51,7 @@ var changeLogs = []models.ChangeLog{
 		AgentInfo:       "jenkins",
 		TypeOfChange:    "config",
 		Username:        "user3",
-		CreatedAt:       time.Date(2020, 11, 10, 10, 34, 58, 651387237, time.UTC),
+		CreatedAt:       time.Date(2020, 11, 12, 9, 34, 58, 651387237, time.UTC),
 	}, models.ChangeLog{
 		ServiceTeamName: "accommodation",
 		ServiceName:     "accommData",
@@ -62,6 +62,7 @@ var changeLogs = []models.ChangeLog{
 		AgentInfo:       "jenkins",
 		TypeOfChange:    "release",
 		Username:        "user5",
+		CreatedAt:       time.Date(2020, 11, 12, 7, 24, 58, 651387237, time.UTC),
 	}, models.ChangeLog{
 		ServiceTeamName: "accommodation",
 		ServiceName:     "accommData",
@@ -72,6 +73,7 @@ var changeLogs = []models.ChangeLog{
 		AgentInfo:       "jenkins",
 		TypeOfChange:    "config",
 		Username:        "user1",
+		CreatedAt:       time.Date(2020, 11, 12, 8, 34, 58, 651387237, time.UTC),
 	}, models.ChangeLog{
 		ServiceTeamName: "inventory",
 		ServiceName:     "inventoryData",
@@ -82,6 +84,7 @@ var changeLogs = []models.ChangeLog{
 		AgentInfo:       "jenkins",
 		TypeOfChange:    "release",
 		Username:        "user12",
+		CreatedAt:       time.Date(2020, 11, 12, 9, 4, 58, 651387237, time.UTC),
 	}, models.ChangeLog{
 		ServiceTeamName: "inventory",
 		ServiceName:     "inventoryData",
@@ -92,6 +95,7 @@ var changeLogs = []models.ChangeLog{
 		AgentInfo:       "jenkins",
 		TypeOfChange:    "config",
 		Username:        "agent11",
+		CreatedAt:       time.Date(2020, 11, 12, 8, 12, 58, 651387237, time.UTC),
 	}, models.ChangeLog{
 		ServiceTeamName: "inventory",
 		ServiceName:     "inventoryData",
@@ -102,5 +106,6 @@ var changeLogs = []models.ChangeLog{
 		AgentInfo:       "jenkins",
 		TypeOfChange:    "release",
 		Username:        "agent1",
+		CreatedAt:       time.Date(2020, 11, 12, 9, 31, 58, 651387237, time.UTC),
 	},
 }
