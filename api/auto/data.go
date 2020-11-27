@@ -1,88 +1,111 @@
 package auto
 
 import (
+	"time"
+
 	"github.com/nitinda/microservice-change-log/api/models"
 )
 
-var users = []models.User{
-	models.User{
-		Username: "sale",
-		Email:    "sale@changeapi.com",
-		Password: "123453433",
-	},
-	models.User{
-		Username: "inventory",
-		Email:    "inventory@changeapi.com",
-		Password: "97878789778",
-	},
-	models.User{
-		Username: "postman",
-		Email:    "postman@changeapi.com",
-		Password: "4545454544",
-	},
-}
-
-// configLogs sample data
-var configLogs = []models.ConfigLog{
-	models.ConfigLog{
-		Service: "hybris",
-		Team:    "sale",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "sale",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "sale",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "sale",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "sale",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "sale",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "sale",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "sale",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "hybris",
-		Team:    "sale",
-		Message: "This is test config entry",
-		UserID:  1,
-	}, models.ConfigLog{
-		Service: "inventoryData",
-		Team:    "inventory-dev",
-		Message: "This is test config entry",
-		UserID:  2,
-	}, models.ConfigLog{
-		Service: "inventory",
-		Team:    "inventory-dev",
-		Message: "This is test config entry",
-		UserID:  2,
-	}, models.ConfigLog{
-		Service: "inventory",
-		Team:    "inventory-dev",
-		Message: "This is test config entry",
-		UserID:  2,
+// changeLogs sample data
+var changeLogs = []models.ChangeLog{
+	models.ChangeLog{
+		ServiceTeamName: "sales",
+		ServiceName:     "hybris",
+		Message:         "This is test config entry",
+		EnvironmentName: "prod",
+		ReleaseInfo:     "1.2.4",
+		CommitHash:      "7b02a4c9b5951ee6edddff23dc961b7d64bf32ebf",
+		AgentInfo:       "jenkins",
+		TypeOfChange:    "release",
+		Username:        "user1",
+		CreatedAt:       time.Date(2020, 11, 12, 06, 4, 58, 651387237, time.UTC),
+	}, models.ChangeLog{
+		ServiceTeamName: "sales",
+		ServiceName:     "hybris",
+		Message:         "This is test config entry",
+		EnvironmentName: "prod",
+		ReleaseInfo:     "1.2.4",
+		CommitHash:      "7b02a4c9b5951ee6eddff23asdfdc961b7d64bf32ebf",
+		AgentInfo:       "jenkins",
+		TypeOfChange:    "config",
+		Username:        "user1",
+		CreatedAt:       time.Date(2020, 11, 12, 07, 14, 58, 651387237, time.UTC),
+	}, models.ChangeLog{
+		ServiceTeamName: "sales",
+		ServiceName:     "hybris",
+		Message:         "This is test config entry",
+		EnvironmentName: "prod",
+		ReleaseInfo:     "1.2.4",
+		CommitHash:      "7b02a4c9b595asdf6eddff23dc961b7d64bf32ebf",
+		AgentInfo:       "jenkins",
+		TypeOfChange:    "release",
+		Username:        "user22",
+		CreatedAt:       time.Date(2020, 11, 12, 8, 24, 58, 651387237, time.UTC),
+	}, models.ChangeLog{
+		ServiceTeamName: "sales",
+		ServiceName:     "hybris",
+		Message:         "This is test config entry",
+		EnvironmentName: "prod",
+		ReleaseInfo:     "1.2.4",
+		CommitHash:      "7b02a4c9bqwe51ee6eddff23dc961b7d64bf32ebf",
+		AgentInfo:       "jenkins",
+		TypeOfChange:    "config",
+		Username:        "user3",
+		CreatedAt:       time.Date(2020, 11, 12, 9, 34, 58, 651387237, time.UTC),
+	}, models.ChangeLog{
+		ServiceTeamName: "accommodation",
+		ServiceName:     "accommData",
+		Message:         "This is test config entry",
+		EnvironmentName: "test",
+		ReleaseInfo:     "1.2.4",
+		CommitHash:      "7b02asdf9b5951ee6eddff23dc961b7d64bf32ebf",
+		AgentInfo:       "jenkins",
+		TypeOfChange:    "release",
+		Username:        "user5",
+		CreatedAt:       time.Date(2020, 11, 12, 7, 24, 58, 651387237, time.UTC),
+	}, models.ChangeLog{
+		ServiceTeamName: "accommodation",
+		ServiceName:     "accommData",
+		Message:         "This is test config entry",
+		EnvironmentName: "prod",
+		ReleaseInfo:     "1.2.4",
+		CommitHash:      "7b02a4c9b5951ee6eddff23dc961b7d64bf32ebf",
+		AgentInfo:       "jenkins",
+		TypeOfChange:    "config",
+		Username:        "user1",
+		CreatedAt:       time.Date(2020, 11, 12, 8, 34, 58, 651387237, time.UTC),
+	}, models.ChangeLog{
+		ServiceTeamName: "inventory",
+		ServiceName:     "inventoryData",
+		Message:         "This is test config entry",
+		EnvironmentName: "test",
+		ReleaseInfo:     "1.2.4",
+		CommitHash:      "7b02a4c9b5951ee6eddff23dc961basdf4bf32ebf",
+		AgentInfo:       "jenkins",
+		TypeOfChange:    "release",
+		Username:        "user12",
+		CreatedAt:       time.Date(2020, 11, 12, 9, 4, 58, 651387237, time.UTC),
+	}, models.ChangeLog{
+		ServiceTeamName: "inventory",
+		ServiceName:     "inventoryData",
+		Message:         "This is test config entry",
+		EnvironmentName: "prod",
+		ReleaseInfo:     "1.2.4",
+		CommitHash:      "7b02a4c9b5951ee6eddff23dc961basdf64bf32ebf",
+		AgentInfo:       "jenkins",
+		TypeOfChange:    "config",
+		Username:        "agent11",
+		CreatedAt:       time.Date(2020, 11, 12, 8, 12, 58, 651387237, time.UTC),
+	}, models.ChangeLog{
+		ServiceTeamName: "inventory",
+		ServiceName:     "inventoryData",
+		Message:         "This is test config entry",
+		EnvironmentName: "prod",
+		ReleaseInfo:     "1.2.4",
+		CommitHash:      "7b02a4c9b59dase6eddff23dc961b7d64bf32ebf",
+		AgentInfo:       "jenkins",
+		TypeOfChange:    "release",
+		Username:        "agent1",
+		CreatedAt:       time.Date(2020, 11, 12, 9, 31, 58, 651387237, time.UTC),
 	},
 }

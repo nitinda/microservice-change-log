@@ -29,17 +29,17 @@ func Run() {
 
 	// Create new Server
 	s := &http.Server{
-		Addr:         fmt.Sprintf("%s:%d", config.BIND_ADDRESS, config.PORT), // Condifgure the bind address
-		Handler:      r,                                                      // Set the Default Handler
-		ErrorLog:     logger.Trace,                                           // ErrorLog specifies an optional logger for errors accepting
-		ReadTimeout:  5 * time.Second,                                        // ReadTimeout is the maximum duration for reading the entire request
-		WriteTimeout: 10 * time.Second,                                       // WriteTimeout is the maximum duration before timing out
-		IdleTimeout:  120 * time.Second,                                      // IdleTimeout is the maximum amount of time to wait for the
+		Addr:         fmt.Sprintf("%s:%d", config.API_BIND_ADDRESS, config.API_PORT), // Condifgure the bind address
+		Handler:      r,                                                              // Set the Default Handler
+		ErrorLog:     logger.Trace,                                                   // ErrorLog specifies an optional logger for errors accepting
+		ReadTimeout:  5 * time.Second,                                                // ReadTimeout is the maximum duration for reading the entire request
+		WriteTimeout: 10 * time.Second,                                               // WriteTimeout is the maximum duration before timing out
+		IdleTimeout:  120 * time.Second,                                              // IdleTimeout is the maximum amount of time to wait for the
 	}
 
 	// Start the Server
 	go func() {
-		logger.Info.Println("Starting server on port ", config.PORT)
+		logger.Info.Println("Starting server on port ", config.API_PORT)
 
 		err := s.ListenAndServe()
 		if err != nil {

@@ -9,7 +9,7 @@ import (
 
 // DBConnectPostgres to connect the database
 func DBConnectPostgres() (*gorm.DB, error) {
-	db, err := gorm.Open(postgres.Open(config.DB_URL), &gorm.Config{
+	db, err := gorm.Open(postgres.Open(config.API_DB_URL), &gorm.Config{
 		Logger:                                   logger.DBLoggerInfo,
 		SkipDefaultTransaction:                   true,
 		DisableForeignKeyConstraintWhenMigrating: false,

@@ -2,61 +2,63 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strconv"
-
-	"github.com/joho/godotenv"
 )
 
 var (
-	PORT         = 0
-	BIND_ADDRESS = ""
-	DB_DRIVER    = ""
-	DB_USER      = ""
-	DB_PASS      = ""
-	DB_NAME      = ""
-	DB_PORT      = 0
-	SSL_MODE     = ""
-	TIMEZONE     = ""
-	DB_URL       = ""
+	API_PORT         = 0
+	API_BIND_ADDRESS = ""
+	API_DB_HOST      = ""
+	API_DB_DRIVER    = ""
+	API_DB_USER      = ""
+	API_DB_PASS      = ""
+	API_DB_NAME      = ""
+	API_DB_PORT      = 5432
+	API_SSL_MODE     = "disabled"
+	API_TIMEZONE     = ""
+	API_DB_URL       = ""
 )
 
 func LoadEnv() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 
 	// Http Server
 
-	PORT, err = strconv.Atoi(os.Getenv("API_PORT"))
+	var err error
+
+	API_PORT, err = strconv.Atoi(os.Getenv("API_PORT"))
 	if err != nil {
-		PORT = 8000
+		API_PORT = 8000
 	}
 
-	if os.Getenv("BIND_ADDRESS") == "" {
-		BIND_ADDRESS = "0.0.0.0"
+	if os.Getenv("API_BIND_ADDRESS") == "" {
+		API_BIND_ADDRESS = "0.0.0.0"
 	} else {
-		BIND_ADDRESS = os.Getenv("BIND_ADDRESS")
+		API_BIND_ADDRESS = os.Getenv("API_BIND_ADDRESS")
 	}
 
 	// Database
-	DB_DRIVER = os.Getenv("DB_DRIVER")
-	DB_USER = os.Getenv("DB_USER")
-	DB_PASS = os.Getenv("DB_PASS")
-	DB_NAME = os.Getenv("DB_NAME")
+	API_DB_DRIVER = os.Getenv("API_DB_DRIVER")
+	API_DB_USER = os.Getenv("API_DB_USER")
+	API_DB_PASS = os.Getenv("API_DB_PASS")
+	API_DB_NAME = os.Getenv("API_DB_NAME")
 
-	DB_PORT, err = strconv.Atoi(os.Getenv("API_PORT"))
+	API_DB_PORT, err = strconv.Atoi(os.Getenv("API_PORT"))
 	if err != nil {
-		DB_PORT = 5432
+		API_DB_PORT = 5432
 	}
 
-	SSL_MODE = os.Getenv("SSL_MODE")
-	TIMEZONE = os.Getenv("TIMEZONE")
+	API_SSL_MODE = os.Getenv("API_SSL_MODE")
+	API_TIMEZONE = os.Getenv("API_TIMEZONE")
 
 	// DB_URL form the connection string for postgresql database
 	// "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
-	DB_URL = fmt.Sprintf("host=0.0.0.0 user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s", os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_NAME"), os.Getenv("DB_PORT"), os.Getenv("SSL_MODE"), os.Getenv("TIMEZONE"))
-
+	API_DB_URL = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
+		os.Getenv("API_DB_HOST"), os.Getenv("API_DB_USER"), os.Getenv("API_DB_PASS"),
+		os.Getenv("API_DB_NAME"), os.Getenv("API_DB_PORT"), os.Getenv("API_SSL_MODE"),
+		os.Getenv("API_TIMEZONE"))
 }

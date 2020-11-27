@@ -6,14 +6,12 @@ type respositoryConfigLogsCRUD struct {
 	db *gorm.DB
 }
 
-func NewRespositoryConfigLogsCRUD(db *gorm.DB) *respositoryConfigLogsCRUD {
-	return &respositoryConfigLogsCRUD{db}
-}
-
-type respositoryUsersCRUD struct {
+// RespositoryChangeLogCRUD struct for getting and updating changelog in database
+type RespositoryChangeLogCRUD struct {
 	db *gorm.DB
 }
 
-func NewRespositoryUsersCRUD(db *gorm.DB) *respositoryUsersCRUD {
-	return &respositoryUsersCRUD{db}
+// NewRespositoryChangeLogCRUD method
+func NewRespositoryChangeLogCRUD(db *gorm.DB) *RespositoryChangeLogCRUD {
+	return &RespositoryChangeLogCRUD{db}
 }
