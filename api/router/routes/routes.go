@@ -15,8 +15,9 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 
 	// handlers for API
 	getR := r.Methods(http.MethodGet).Subrouter()
-
 	PostR := r.Methods(http.MethodPost).Subrouter()
+
+	getR.HandleFunc("/api/healthcheck", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.GetAPIStatus)))
 
 	// swagger:route POST /api/v1/oauth/token changelog createSessionToken
 	// Create new session token entry

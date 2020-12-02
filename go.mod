@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/badoux/checkmail v1.2.1
+	github.com/etherlabsio/healthcheck v0.0.0-20191224061800-dd3d2fd8c3f6
 	github.com/go-openapi/runtime v0.19.22
 	github.com/gorilla/mux v1.8.0
 	github.com/jinzhu/gorm v1.9.16

@@ -2,8 +2,11 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 var (
@@ -21,14 +24,14 @@ var (
 )
 
 func LoadEnv() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatal("Error loading .env file")
-	// }
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	// Http Server
 
-	var err error
+	// var err error
 
 	API_PORT, err = strconv.Atoi(os.Getenv("API_PORT"))
 	if err != nil {
