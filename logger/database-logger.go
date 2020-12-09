@@ -22,8 +22,18 @@ var DBLoggerInfo = logger.New(
 var DBLoggerError = logger.New(
 	log.New(os.Stdout, "changelog-api - database - ", log.Ldate|log.Ltime|log.Lshortfile), // io writer
 	logger.Config{
+		SlowThreshold: time.Second,  // Slow SQL threshold
+		LogLevel:      logger.Error, // Log level
+		Colorful:      true,         // Disable color
+	},
+)
+
+// DBLoggerWarn for datbase logs
+var DBLoggerWarn = logger.New(
+	log.New(os.Stdout, "changelog-api - database - ", log.Ldate|log.Ltime|log.Lshortfile), // io writer
+	logger.Config{
 		SlowThreshold: time.Second, // Slow SQL threshold
-		LogLevel:      logger.Info, // Log level
+		LogLevel:      logger.Warn, // Log level
 		Colorful:      true,        // Disable color
 	},
 )

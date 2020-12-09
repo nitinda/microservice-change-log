@@ -19,24 +19,6 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 
 	getR.HandleFunc("/api/healthcheck", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.GetAPIStatus)))
 
-	// swagger:route POST /api/oauth/token changelog createSessionToken
-	// Create new session token entry
-	//     Consumes:
-	//     - application/json
-	//
-	//     Produces:
-	//     - application/json
-	//
-	//     Schemes: http
-	//
-	//     Security:
-	//       OAuth2: []
-	//
-	//     Responses:
-	//       200: createSessionTokenResponse
-	//       403: createSessionTokenErrorResponse
-	// PostR.HandleFunc("/api/token", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.GenerateSessionToken)))
-
 	// swagger:route POST /api/changelog changelog createChangeLog
 	// Create new config log entry
 	//     Consumes:
@@ -48,7 +30,7 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 	//     Schemes: http
 	//
 	//     Security:
-	//       OAuth2: []
+	//       Bearer:
 	//
 	//     Responses:
 	//       200: changelogResponse

@@ -22,10 +22,10 @@ func LoadData() {
 
 	// Drop Table
 
-	err = db.Migrator().DropTable(&models.ChangeLog{})
-	if err != nil {
-		logger.Error.Println(err)
-	}
+	// err = db.Migrator().DropTable(&models.ChangeLog{})
+	// if err != nil {
+	// 	logger.Error.Println(err)
+	// }
 
 	// err = db.Migrator().DropTable(&models.TeamInfo{})
 	// if err != nil {
@@ -51,8 +51,8 @@ func LoadData() {
 	// 	log.Fatal(err)
 	// }
 
-	err = db.Model(&models.ChangeLog{}).Create(&changeLogs).Error
-	if err != nil {
-		logger.Error.Println(err)
-	}
+	// err = db.Model(&models.ChangeLog{}).Create(&changeLogs).Error
+	// if err != nil {
+	// 	logger.Error.Println(err)
+	// }
 }

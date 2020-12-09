@@ -79,7 +79,7 @@ definitions:
         x-go-name: Message
     type: object
     x-go-package: github.com/nitinda/microservice-change-log/api/docs
-host: localhost
+host: ops-changelog-api.tuiuki.io
 info:
   contact:
     email: nitindas@gmail.com
@@ -96,7 +96,7 @@ info:
     Documentation
   version: 1.0.0
 paths:
-  /api/v1/changelog:
+  /api/changelog:
     post:
       consumes:
       - application/json
@@ -173,49 +173,7 @@ paths:
       schemes:
       - http
       security:
-      - OAuth2:
-        - '[]'
-      tags:
-      - changelog
-  /api/v1/oauth/token:
-    post:
-      consumes:
-      - application/json
-      description: Create new session token entry
-      operationId: createSessionToken
-      parameters:
-      - in: body
-        name: Body
-        schema:
-          properties:
-            ClientSecret:
-              description: the Client Secret to generate new session token
-              example: '''$2a$10$m/22n7xmifpi1/rpsIzsIuY7.9walzEKloGCJF2ZpV.AElO83f2du'''
-              maxLength: 80
-              type: string
-              uniqueItems: true
-            TeamName:
-              description: the Service Team Name to generate new session token
-              example: sales
-              maxLength: 20
-              type: string
-              uniqueItems: true
-          required:
-          - TeamName
-          - ClientSecret
-          type: object
-      produces:
-      - application/json
-      responses:
-        "200":
-          $ref: '#/responses/createSessionTokenResponse'
-        "403":
-          $ref: '#/responses/createSessionTokenErrorResponse'
-      schemes:
-      - http
-      security:
-      - OAuth2:
-        - '[]'
+      - Bearer: []
       tags:
       - changelog
 produces:
@@ -257,18 +215,22 @@ responses:
     schema:
       $ref: '#/definitions/GenericError'
 schemes:
-- http
+- https
 security:
-- OAuth2:
-  - '[]'
+- OAuth2: []
+- Bearer: []
 securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
   OAuth2:
     description: This API uses OAuth 2 with the Client Credntials grant flow.
     flow: application
     in: header
     scopes:
-      email: userEmail
-      userinfo: username
-    tokenUrl: /token
+      ApigeeAppKey: Key
+      ApigeeAppSecret: Secret
+    tokenUrl: https://tui-prod.apigee.net/oauth2/token
     type: oauth2
 swagger: "2.0"

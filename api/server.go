@@ -23,6 +23,7 @@ func Run() {
 
 	config.LoadEnv()
 	auto.LoadData()
+	auto.CreateUser()
 	// l := log.New(os.Stdout, "change-log-api ", log.LstdFlags)
 
 	r := router.NewRouter()

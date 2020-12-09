@@ -22,19 +22,23 @@
 //     - application/json
 //
 //     Security:
-//     - OAuth2: []
+//     - OAuth2:
+//     - Bearer:
 //
 //     SecurityDefinitions:
 //     OAuth2:
 //         type: oauth2
 //         description: This API uses OAuth 2 with the Client Credntials grant flow.
-//         tokenUrl: /token
+//         tokenUrl: https://tui-prod.apigee.net/oauth2/token
 //         in: header
 //         scopes:
-//           email: userEmail
-//           userinfo: username
+//           ApigeeAppKey: Key
+//           ApigeeAppSecret: Secret
 //         flow: application
-//
+//     Bearer:
+//         type: apiKey
+//         name: Authorization
+//         in: header
 //
 // swagger:meta
 package docs
