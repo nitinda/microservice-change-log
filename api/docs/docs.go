@@ -8,8 +8,8 @@
 //
 // there are no TOS at this moment.
 //
-//	   Schemes: http
-//     Host: localhost
+//	   Schemes: https
+//     Host: ops-changelog-api.tuiuki.io
 //     BasePath: /api
 //     Version: 1.0.0
 //     License: MIT http://opensource.org/licenses/MIT

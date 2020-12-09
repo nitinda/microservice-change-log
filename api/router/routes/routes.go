@@ -19,7 +19,7 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 
 	getR.HandleFunc("/api/healthcheck", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.GetAPIStatus)))
 
-	// swagger:route POST /api/v1/oauth/token changelog createSessionToken
+	// swagger:route POST /api/oauth/token changelog createSessionToken
 	// Create new session token entry
 	//     Consumes:
 	//     - application/json
@@ -37,7 +37,7 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 	//       403: createSessionTokenErrorResponse
 	// PostR.HandleFunc("/api/token", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.GenerateSessionToken)))
 
-	// swagger:route POST /api/v1/changelog changelog createChangeLog
+	// swagger:route POST /api/changelog changelog createChangeLog
 	// Create new config log entry
 	//     Consumes:
 	//     - application/json
@@ -53,16 +53,16 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 	//     Responses:
 	//       200: changelogResponse
 	//       401: changelogErrorResponse
-	PostR.HandleFunc("/api/v1/changelog", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.CreateChangeLog)))
+	PostR.HandleFunc("/api/changelog", middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(controllers.CreateChangeLog)))
 
 	// handler for documentation
 	opts := middleware.RedocOpts{
 		SpecURL: "/swagger.yaml",
-		Path:    "/api/v1/docs",
+		Path:    "/api/docs",
 	}
 	sh := middleware.Redoc(opts, nil)
 
-	getR.Handle("/api/v1/docs", sh)
+	getR.Handle("/api/docs", sh)
 	getR.Handle("/swagger.yaml", http.FileServer(http.Dir("./main/")))
 
 	return r
