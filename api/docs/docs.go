@@ -30,7 +30,7 @@
 //     OAuth2:
 //         type: oauth2
 //         description: This API uses OAuth 2 with the Client Credntials grant flow.
-//         tokenUrl: https://prod.api.tui/oauth2/token
+//         tokenUrl: /oauth2/token
 //         in: header
 //         flow: application
 //     Bearer:
