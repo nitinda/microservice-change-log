@@ -13,7 +13,7 @@
 //     BasePath: /api
 //     Version: 1.0
 //     License: MIT http://opensource.org/licenses/MIT
-//     Contact: Cloud Platform Team<uki-cloud-platforms@tui.co.uk>
+//     Contact: Nitin Das<nitinda@gmail.com>
 //
 //	   Consumes:
 //     - application/json
