@@ -1,6 +1,7 @@
 basePath: /api
 consumes:
 - application/json
+- application/x-www-form-urlencoded
 definitions:
   ChangeLog:
     description: ChangeLog defines the structure for an API config-log
@@ -82,8 +83,8 @@ definitions:
 host: ops-changelog-api.tuiuki.io
 info:
   contact:
-    email: nitindas@gmail.com
-    name: Nitin Das
+    email: uki-cloud-platforms@tui.co.uk
+    name: Cloud Platform Team
   description: |-
     the purpose of this application is to provide an application
     that will be used to record config chanegs applied to services.
@@ -94,7 +95,7 @@ info:
   title: |-
     Changelog API
     Documentation
-  version: 1.0.0
+  version: "1.0"
 paths:
   /api/changelog:
     post:
@@ -168,12 +169,61 @@ paths:
       responses:
         "200":
           $ref: '#/responses/changelogResponse'
-        "401":
+        "500":
           $ref: '#/responses/changelogErrorResponse'
       schemes:
       - http
       security:
       - Bearer: []
+      tags:
+      - changelog
+  /token:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Create new session token entry
+      operationId: createSessionToken
+      parameters:
+      - description: |-
+          The Authorization to generate new session token
+          aBase64EncodeFunction(ApigeeKey:ApigeeSecret), Note the colon separating the two values.
+        example: Basic VG1iQ3NNaGZyVXJHCVKHNd3FZMzasHekZGUlRFT046TWMIZXCVNQAPk5xJSbQ==
+        in: header
+        name: Authorization
+        required: true
+        type: string
+        uniqueItems: true
+      - default: application/x-www-form-urlencoded
+        description: Content Type for request header
+        in: header
+        name: Content-Type
+        required: true
+        type: string
+        x-go-name: ContentType
+      - description: the Authorization to generate new session token
+        in: body
+        name: Body
+        schema:
+          properties:
+            grant_type:
+              default: client_credentials
+              description: The grant type for api authentication
+              type: string
+              x-go-name: GrantType
+          required:
+          - grant_type
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          $ref: '#/responses/createSessionTokenResponse'
+        "403":
+          $ref: '#/responses/createSessionTokenErrorResponse'
+      schemes:
+      - http
+      security:
+      - OAuth2: []
       tags:
       - changelog
 produces:
@@ -196,26 +246,64 @@ responses:
     description: A ValidationError is an error that is used when the required input fails validation.
     schema:
       properties:
-        unauthorized:
-          example: Access Denied
-          type: string
-          x-go-name: Message
+        fault:
+          properties:
+            detail:
+              properties:
+                errorcode:
+                  example: oauth.v2.InvalidClientIdentifier
+                  type: string
+                  x-go-name: ErrorCodeMessage
+              type: object
+              x-go-name: DetailMessage
+            faultstring:
+              example: Invalid client identifier {0}
+              type: string
+              x-go-name: FaultStringMessage
+          type: object
+          x-go-name: FaultMessage
       type: object
   createSessionTokenResponse:
     description: Data structure representing create session token api response
     schema:
       properties:
         access_token:
-          example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MDM3NTc2NzgsInRlYW1JRCI6MX0.uCRZnm6Fz6nI5_dV9lzRKejF3M5HB_MD5gRYuHG8sfVfPVmdNH
+          example: Usf5LTdStGxER1GgHdGIj31VfPVmdNH
           type: string
-          x-go-name: Code
+          x-go-name: AccessToken
+        client_id:
+          example: sdasdzoizcxhviuhIUIudsakfj
+          type: string
+          x-go-name: CliendID
+        expires_in:
+          example: 3599
+          format: int64
+          type: integer
+          x-go-name: ExpiresIn
+        issued_at:
+          description: 'Exmple: 1607600275154'
+          format: int64
+          type: integer
+          x-go-name: IssuedAt
+        refresh_count:
+          description: 'Exmaple: 0'
+          format: int64
+          type: integer
+          x-go-name: RefeshCount
+        scope:
+          type: string
+          x-go-name: Scope
+        token_type:
+          example: Bearer
+          type: string
+          x-go-name: TokenType
       type: object
   genericError:
     description: Generic error message returned as a string
     schema:
       $ref: '#/definitions/GenericError'
 schemes:
-- https
+- http
 security:
 - OAuth2: []
 - Bearer: []
@@ -228,9 +316,6 @@ securityDefinitions:
     description: This API uses OAuth 2 with the Client Credntials grant flow.
     flow: application
     in: header
-    scopes:
-      ApigeeAppKey: Key
-      ApigeeAppSecret: Secret
-    tokenUrl: https://tui-prod.apigee.net/oauth2/token
+    tokenUrl: https://prod.api.tui/oauth2/token
     type: oauth2
 swagger: "2.0"

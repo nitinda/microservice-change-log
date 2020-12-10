@@ -8,15 +8,16 @@
 //
 // there are no TOS at this moment.
 //
-//	   Schemes: https
+//	   Schemes: http
 //     Host: ops-changelog-api.tuiuki.io
 //     BasePath: /api
-//     Version: 1.0.0
+//     Version: 1.0
 //     License: MIT http://opensource.org/licenses/MIT
-//     Contact: Nitin Das<nitindas@gmail.com>
+//     Contact: Cloud Platform Team<uki-cloud-platforms@tui.co.uk>
 //
 //	   Consumes:
 //     - application/json
+//     - application/x-www-form-urlencoded
 //
 //     Produces:
 //     - application/json
@@ -29,16 +30,14 @@
 //     OAuth2:
 //         type: oauth2
 //         description: This API uses OAuth 2 with the Client Credntials grant flow.
-//         tokenUrl: https://tui-prod.apigee.net/oauth2/token
+//         tokenUrl: https://prod.api.tui/oauth2/token
 //         in: header
-//         scopes:
-//           ApigeeAppKey: Key
-//           ApigeeAppSecret: Secret
 //         flow: application
 //     Bearer:
 //         type: apiKey
 //         name: Authorization
 //         in: header
+//
 //
 // swagger:meta
 package docs
@@ -161,23 +160,32 @@ type changelogResponseWrapper struct {
 // Data structure representing a single teaminfo
 // swagger:parameters createSessionToken
 type createSessionTokenRquestWrapper struct {
+	//
+	// The Authorization to generate new session token
+	// aBase64EncodeFunction(ApigeeKey:ApigeeSecret), Note the colon separating the two values.
+	//
+	// unique: true
+	// required: true
+	// in: header
+	// example: Basic VG1iQ3NNaGZyVXJHCVKHNd3FZMzasHekZGUlRFT046TWMIZXCVNQAPk5xJSbQ==
+	Authorization string `json:"Authorization"`
+
+	// Content Type for request header
+	//
+	// required: true
+	// in: header
+	// default: application/x-www-form-urlencoded
+	ContentType string `json:"Content-Type"`
+
+	// the Authorization to generate new session token
+	//
 	// in:body
 	Body struct {
-		// the Service Team Name to generate new session token
+		// The grant type for api authentication
 		//
 		// required: true
-		// Unique: true
-		// max length: 20
-		// example: sales
-		TeamName string `json:"TeamName"`
-
-		// the Client Secret to generate new session token
-		//
-		// required: true
-		// Unique: true
-		// max length: 80
-		// example: '$2a$10$m/22n7xmifpi1/rpsIzsIuY7.9walzEKloGCJF2ZpV.AElO83f2du'
-		ClientSecret string `json:"ClientSecret"`
+		// default: client_credentials
+		GrantType string `json:"grant_type"`
 	}
 }
 
@@ -187,8 +195,26 @@ type createSessionTokenResponseWrapper struct {
 	// Newly created Change-Log entry
 	// in: body
 	Body struct {
-		// Example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MDM3NTc2NzgsInRlYW1JRCI6MX0.uCRZnm6Fz6nI5_dV9lzRKejF3M5HB_MD5gRYuHG8sfVfPVmdNH
-		Code string `json:"access_token"`
+		// Example: Bearer
+		TokenType string `json:"token_type"`
+
+		// Example: Usf5LTdStGxER1GgHdGIj31VfPVmdNH
+		AccessToken string `json:"access_token"`
+
+		// Example: sdasdzoizcxhviuhIUIudsakfj
+		CliendID string `json:"client_id"`
+
+		// Example:
+		Scope string `json:"scope"`
+
+		// Example: 3599
+		ExpiresIn int `json:"expires_in"`
+
+		// Exmaple: 0
+		RefeshCount int `json:"refresh_count"`
+
+		// Exmple: 1607600275154
+		IssuedAt int `json:"issued_at"`
 	}
 }
 
@@ -198,7 +224,13 @@ type createSessionTokenErrorResponse struct {
 	// To handle unauthorized access
 	// in: body
 	Body struct {
-		// Example: Access Denied
-		Message string `json:"unauthorized"`
+		FaultMessage struct {
+			// Example: Invalid client identifier {0}
+			FaultStringMessage string `json:"faultstring"`
+			DetailMessage      struct {
+				// Example: oauth.v2.InvalidClientIdentifier
+				ErrorCodeMessage string `json:"errorcode"`
+			} `json:"detail"`
+		} `json:"fault"`
 	}
 }
