@@ -80,11 +80,11 @@ definitions:
         x-go-name: Message
     type: object
     x-go-package: github.com/nitinda/microservice-change-log/api/docs
-host: ops-changelog-api.tuiuki.io
+host: localhost
 info:
   contact:
-    email: uki-cloud-platforms@tui.co.uk
-    name: Cloud Platform Team
+    email: nitinda@gmail.com
+    name: Nitin Das
   description: |-
     the purpose of this application is to provide an application
     that will be used to record config chanegs applied to services.
@@ -316,6 +316,6 @@ securityDefinitions:
     description: This API uses OAuth 2 with the Client Credntials grant flow.
     flow: application
     in: header
-    tokenUrl: https://prod.api.tui/oauth2/token
+    tokenUrl: /oauth2/token
     type: oauth2
 swagger: "2.0"
