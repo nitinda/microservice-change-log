@@ -10,5 +10,5 @@ require (
 	github.com/joho/godotenv v1.3.0
 	golang.org/x/crypto v0.0.0-20201012173705-84dcc777aaee
 	gorm.io/driver/postgres v1.0.8
-	gorm.io/gorm v1.21.7
+	gorm.io/gorm v1.21.8
 )
